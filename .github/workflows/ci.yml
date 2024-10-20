@@ -77,3 +77,7 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f deployment.yaml
+
+    - name: Expose Service
+      run: |
+        kubectl expose deployment myapp-deployment --type=NodePort --port=3000
