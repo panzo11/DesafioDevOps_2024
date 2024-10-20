@@ -4,7 +4,7 @@
   "description": "Criar um pipeline CI/CD automatizado usando GitLab CI, Docker e Kubernetes.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,8 @@
   "homepage": "https://github.com/panzo11/DesafioDevOps_2024#readme",
   "dependencies": {
     "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "mocha": "^10.7.3"
   }
 }
