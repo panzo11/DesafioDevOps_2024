@@ -74,10 +74,22 @@ jobs:
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
 
+    - name: Configure Kubernetes Context
+      run: |
+        kubectl config set-credentials myapp-user --username=${{ secrets.K8S_USERNAME }} --password=${{ secrets.K8S_PASSWORD }}
+        kubectl config set-context myapp-context --cluster=minikube --namespace=default --user=myapp-user
+        kubectl config use-context myapp-context
+
+    - name: Create Kubernetes Secret
+      run: |
+        kubectl create secret generic myapp-secret \
+          --from-literal=username=${{ secrets.K8S_USERNAME }} \
+          --from-literal=password=${{ secrets.K8S_PASSWORD }}
+
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml  # Adicione esta linha
+        kubectl apply -f service.yaml
 
     - name: Expose Service
       run: |

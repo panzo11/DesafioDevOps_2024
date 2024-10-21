@@ -9,4 +9,4 @@ spec:
       targetPort: 3000
       nodePort: 30000  # Porta externa para acessar o serviço
   selector:
-    app: myapp
+    app: myapp  # Deve corresponder às labels no deployment
