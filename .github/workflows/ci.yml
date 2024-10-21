@@ -66,7 +66,7 @@ jobs:
       run: |
         curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
         sudo install minikube-linux-amd64 /usr/local/bin/minikube
-        minikube start --driver=docker
+        minikube start --driver=docker --extra-config=apiserver.authorization-mode=RBAC
 
     - name: Set up kubectl
       run: |
@@ -80,8 +80,8 @@ jobs:
 
     - name: Configure Kubernetes Context
       run: |
-        kubectl config set-credentials myapp-user --username=${{ secrets.K8S_USERNAME }} --password=${{ secrets.K8S_PASSWORD }}
-        kubectl config set-context myapp-context --cluster=minikube --namespace=default --user=myapp-user
+        kubectl config set-credentials zuapedro --username=${{ secrets.K8S_USERNAME }} --password=${{ secrets.K8S_PASSWORD }}
+        kubectl config set-context myapp-context --cluster=minikube --namespace=default --user=zuapedro
         kubectl config use-context myapp-context
 
     - name: Wait for Minikube to be Ready
@@ -90,9 +90,13 @@ jobs:
           kubectl get nodes && break || sleep 10
         done
 
+    - name: Create ClusterRoleBinding
+      run: |
+        kubectl create clusterrolebinding zuapedro-admin --clusterrole=cluster-admin --user=zuapedro
+
     - name: Create RoleBinding
       run: |
-        cat <<EOF | kubectl apply -f - --validate=false
+        cat <<EOF | kubectl apply -f -
         apiVersion: rbac.authorization.k8s.io/v1
         kind: RoleBinding
         metadata:
@@ -100,7 +104,7 @@ jobs:
           namespace: default
         subjects:
         - kind: User
-          name: myapp-user
+          name: zuapedro
           apiGroup: rbac.authorization.k8s.io
         roleRef:
           kind: Role
@@ -112,13 +116,13 @@ jobs:
       run: |
         kubectl create secret generic myapp-secret \
           --from-literal=username=${{ secrets.K8S_USERNAME }} \
-          --from-literal=password=${{ secrets.K8S_PASSWORD }} --validate=false
+          --from-literal=password=${{ secrets.K8S_PASSWORD }}
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml --validate=false
-        kubectl apply -f service.yaml --validate=false
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
 
     - name: Expose Service
       run: |
-        kubectl expose deployment myapp-deployment --type=NodePort --port=3000 --validate=false
+        kubectl expose deployment myapp-deployment --type=NodePort --port=3000
