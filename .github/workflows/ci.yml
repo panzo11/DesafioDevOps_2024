@@ -90,9 +90,13 @@ jobs:
           kubectl get nodes && break || sleep 10
         done
 
-    - name: Create ClusterRoleBinding
+    - name: Create ClusterRoleBinding for RuntimeClass
       run: |
-        kubectl create clusterrolebinding zuapedro-admin --clusterrole=cluster-admin --user=zuapedro
+        kubectl create clusterrolebinding minikube-runtimeclass --clusterrole=cluster-admin --user=system:node:minikube
+
+    - name: Create ClusterRoleBinding for CSR
+      run: |
+        kubectl create clusterrolebinding minikube-csr --clusterrole=cluster-admin --user=system:node:minikube
 
     - name: Create RoleBinding
       run: |
