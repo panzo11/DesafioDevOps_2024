@@ -62,6 +62,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set up Minikube
+      run: |
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        sudo install minikube-linux-amd64 /usr/local/bin/minikube
+        minikube start --driver=docker
+
+    - name: Set up kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+        
+    - name: Deploy to Kubernetes using Helm
+      run: |
+        helm repo add portainer https://portainer.github.io/k8s/
+        helm repo update
+        helm install --create-namespace -n myapp myapp ./myapp
+
     - name: Deploy to Portainer
       env:
         PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
