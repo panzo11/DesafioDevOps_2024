@@ -62,29 +62,26 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Minikube
-      run: |
-        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-        sudo install minikube-linux-amd64 /usr/local/bin/minikube
-        minikube start --driver=docker
-
-    - name: Set up kubectl
-      run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
-        
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -f deployment.yaml
-
-    - name: Expose Service
-      run: |
-        kubectl expose deployment myapp-deployment --name=myapp-service --type=NodePort --port=3000
-
-    - name: Deploy to Final Server
+    - name: Deploy to Portainer
       env:
-        DEPL_USER: ${{ secrets.DEPL_USER }}
-        DEPL_PASSWD: ${{ secrets.DEPL_PASSWD }}
+        PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+        PORTAINER_ACCESS_TOKEN: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
       run: |
-        curl -u $DEPL_USER:$DEPL_PASSWD -X POST http://vmi2193192.contaboserver.net:9000/#!/auth
+        curl -X POST "$PORTAINER_URL/api/endpoints/1/docker/containers/create" \
+          -H "Authorization: Bearer $PORTAINER_ACCESS_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "Image": "docker.io/${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}",
+                "name": "myapp-container",
+                "HostConfig": {
+                  "PortBindings": {
+                    "3000/tcp": [
+                      {
+                        "HostPort": "9000"
+                      }
+                    ]
+                  }
+                }
+              }'
+        curl -X POST "$PORTAINER_URL/api/endpoints/1/docker/containers/myapp-container/start" \
+          -H "Authorization: Bearer $PORTAINER_ACCESS_TOKEN"
