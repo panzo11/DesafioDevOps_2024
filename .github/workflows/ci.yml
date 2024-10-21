@@ -81,3 +81,10 @@ jobs:
     - name: Expose Service
       run: |
         kubectl expose deployment myapp-deployment --name=myapp-service --type=NodePort --port=3000
+
+    - name: Deploy to Final Server
+      env:
+        DEPL_USER: ${{ secrets.DEPL_USER }}
+        DEPL_PASSWD: ${{ secrets.DEPL_PASSWD }}
+      run: |
+        curl -u $DEPL_USER:$DEPL_PASSWD -X POST http://vmi2193192.contaboserver.net:9000/#!/auth
