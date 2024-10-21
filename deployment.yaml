@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: myapp-deployment
 spec:
-  replicas: 1
+  replicas: 7
   selector:
     matchLabels:
-      app: myapp  # Deve corresponder às labels no template
+      app: myapp
   template:
     metadata:
       labels:
-        app: myapp  # Deve corresponder ao selector
+        app: myapp
     spec:
       containers:
       - name: myapp
-        image: docker.io/${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}  # Certifique-se de que a imagem está correta
+        image: docker.io/${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
         ports:
         - containerPort: 3000
