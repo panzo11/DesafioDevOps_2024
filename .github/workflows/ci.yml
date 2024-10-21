@@ -80,6 +80,24 @@ jobs:
         kubectl config set-context myapp-context --cluster=minikube --namespace=default --user=myapp-user
         kubectl config use-context myapp-context
 
+    - name: Create RoleBinding
+      run: |
+        cat <<EOF | kubectl apply -f -
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: myapp-rolebinding
+          namespace: default
+        subjects:
+        - kind: User
+          name: myapp-user
+          apiGroup: rbac.authorization.k8s.io
+        roleRef:
+          kind: Role
+          name: admin
+          apiGroup: rbac.authorization.k8s.io
+        EOF
+
     - name: Create Kubernetes Secret
       run: |
         kubectl create secret generic myapp-secret \
