@@ -66,7 +66,7 @@ jobs:
       run: |
         curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
         sudo install minikube-linux-amd64 /usr/local/bin/minikube
-        minikube start --driver=docker --extra-config=apiserver.authorization-mode=RBAC
+        minikube start --driver=docker --extra-config=apiserver.authorization-mode=RBAC --extra-config=kubelet.authorization-mode=Webhook --extra-config=kubelet.authentication-token-webhook=true
 
     - name: Set up kubectl
       run: |
