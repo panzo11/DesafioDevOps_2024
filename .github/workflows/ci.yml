@@ -74,6 +74,10 @@ jobs:
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
 
+    - name: Verify Minikube Status
+      run: |
+        minikube status
+
     - name: Configure Kubernetes Context
       run: |
         kubectl config set-credentials myapp-user --username=${{ secrets.K8S_USERNAME }} --password=${{ secrets.K8S_PASSWORD }}
