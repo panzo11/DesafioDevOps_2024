@@ -84,6 +84,9 @@ jobs:
         kubectl config set-context myapp-context --cluster=minikube --namespace=default --user=myapp-user
         kubectl config use-context myapp-context
 
+    - name: Wait for Minikube to be Ready
+      run: sleep 30
+
     - name: Create RoleBinding
       run: |
         cat <<EOF | kubectl apply -f - --validate=false
