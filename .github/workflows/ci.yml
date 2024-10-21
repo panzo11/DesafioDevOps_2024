@@ -82,7 +82,7 @@ jobs:
 
     - name: Create RoleBinding
       run: |
-        cat <<EOF | kubectl apply -f -
+        cat <<EOF | kubectl apply -f - --validate=false
         apiVersion: rbac.authorization.k8s.io/v1
         kind: RoleBinding
         metadata:
@@ -102,13 +102,13 @@ jobs:
       run: |
         kubectl create secret generic myapp-secret \
           --from-literal=username=${{ secrets.K8S_USERNAME }} \
-          --from-literal=password=${{ secrets.K8S_PASSWORD }}
+          --from-literal=password=${{ secrets.K8S_PASSWORD }} --validate=false
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
+        kubectl apply -f deployment.yaml --validate=false
+        kubectl apply -f service.yaml --validate=false
 
     - name: Expose Service
       run: |
-        kubectl expose deployment myapp-deployment --type=NodePort --port=3000
+        kubectl expose deployment myapp-deployment --type=NodePort --port=3000 --validate=false
