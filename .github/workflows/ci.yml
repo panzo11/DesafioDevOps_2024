@@ -98,6 +98,14 @@ jobs:
       run: |
         kubectl create clusterrolebinding minikube-csr --clusterrole=cluster-admin --user=system:node:minikube
 
+    - name: Create ClusterRoleBinding for CSIDriver
+      run: |
+        kubectl create clusterrolebinding minikube-csidriver --clusterrole=cluster-admin --user=system:node:minikube
+
+    - name: Create ClusterRoleBinding for Nodes
+      run: |
+        kubectl create clusterrolebinding minikube-nodes --clusterrole=cluster-admin --user=system:node:minikube
+
     - name: Create RoleBinding
       run: |
         cat <<EOF | kubectl apply -f -
