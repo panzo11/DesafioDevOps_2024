@@ -25,7 +25,7 @@ jobs:
       run: npm install
 
     - name: Build Docker image for backend
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}backend:latest ./backend
 
     - name: Build Docker image for frontend
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
