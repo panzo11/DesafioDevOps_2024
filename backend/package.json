@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha",
-    "setup-test": "mkdir -p test && touch test/test.js"
+    "test": "mocha"
   },
   "dependencies": {
     "express": "^4.17.1",
