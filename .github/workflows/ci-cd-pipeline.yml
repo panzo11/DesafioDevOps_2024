@@ -22,7 +22,7 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --prefix ./backend
 
     - name: Build Docker image for backend
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
@@ -59,10 +59,10 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --prefix ./backend
 
     - name: Run tests
-      run: npm test
+      run: npm test --prefix ./backend
 
   deploy:
     runs-on: ubuntu-latest
@@ -91,4 +91,4 @@ jobs:
     - name: Deploy to AKS
       run: |
         kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/service.yaml
+        kubectl
