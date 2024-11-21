@@ -25,13 +25,13 @@ jobs:
       run: npm install
 
     - name: Build Docker image for backend
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}backend:latest ./backend
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
 
     - name: Build Docker image for frontend
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}frontend:latest ./frontend
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
 
     - name: Build Docker image for MySQL
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}mysql:latest ./mysql
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mysql:latest ./mysql
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
@@ -41,9 +41,9 @@ jobs:
 
     - name: Push Docker images
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}backend:latest ./backend
-        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./fontend
-        docker push ${{ secrets.DOCKER_USERNAME }}/mysql:latest ./mysql
+        docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/mysql:latest
 
   test:
     runs-on: ubuntu-latest
