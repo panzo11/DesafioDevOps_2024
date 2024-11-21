@@ -1,0 +1,17 @@
+replicaCount: 3
+
+image:
+  repository: your-dockerhub-username/your-repo-name
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
