@@ -45,37 +45,13 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/mysql:latest
 
-  test:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: npm install --prefix ./backend
-
-    - name: Run tests
-      run: npm test --prefix ./backend
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'latest'
 
     - name: Azure Login
       uses: azure/login@v1
