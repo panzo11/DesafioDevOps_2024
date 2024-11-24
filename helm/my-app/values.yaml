@@ -1,17 +1,26 @@
 replicaCount: 3
 
 image:
-  repository: your-dockerhub-username/your-repo-name
+  repository: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+  tag: latest
+  pullPolicy: IfNotPresent
+
+frontendImage:
+  repository: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+  tag: latest
+  pullPolicy: IfNotPresent
+
+mysqlImage:
+  repository: ${{ secrets.DOCKER_USERNAME }}/mysql:latest
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
   type: LoadBalancer
   port: 80
 
+mysqlService:
+  type: ClusterIP
+  port: 3306
+
 resources: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

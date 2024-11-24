@@ -1,4 +1,26 @@
-apiVersion: v2
-name: my-app
-description: A Helm chart for deploying my-app
-version: 0.1.0
+replicaCount: 3
+
+image:
+  repository: ${{ secrets.DOCKER_USERNAME }}/backend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+frontendImage:
+  repository: ${{ secrets.DOCKER_USERNAME }}/frontend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+mysqlImage:
+  repository: ${{ secrets.DOCKER_USERNAME }}/mysql
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+mysqlService:
+  type: ClusterIP
+  port: 3306
+
+resources: {}
