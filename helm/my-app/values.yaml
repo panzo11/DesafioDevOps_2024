@@ -1,17 +1,17 @@
 replicaCount: 3
 
 image:
-  repository: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+  repository: ${{ secrets.DOCKER_USERNAME }}/backend
   tag: latest
   pullPolicy: IfNotPresent
 
 frontendImage:
-  repository: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+  repository: ${{ secrets.DOCKER_USERNAME }}/frontend
   tag: latest
   pullPolicy: IfNotPresent
 
 mysqlImage:
-  repository: ${{ secrets.DOCKER_USERNAME }}/mysql:latest
+  repository: ${{ secrets.DOCKER_USERNAME }}/mysql
   tag: latest
   pullPolicy: IfNotPresent
 

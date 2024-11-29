@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+        image: ${{ secrets.DOCKER_USERNAME }}/backend
         ports:
         - containerPort: 3000
       - name: frontend
-        image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        image: ${{ secrets.DOCKER_USERNAME }}/frontend
         ports:
         - containerPort: 80
       - name: mysql
-        image: ${{ secrets.DOCKER_USERNAME }}/mysql:latest
+        image: ${{ secrets.DOCKER_USERNAME }}/mysql
         ports:
         - containerPort: 3306
